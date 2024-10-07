@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uts/screens/search.dart'; // Import file search.dart
 
 class OurHome extends StatelessWidget {
   @override
@@ -56,7 +57,16 @@ class OurHome extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 10),
-                    Icon(Icons.search, color: Colors.orange),
+                    GestureDetector(
+                      onTap: () {
+                        // Navigasi ke halaman Search ketika ikon pencarian ditekan
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const search()),
+                        );
+                      },
+                      child: Icon(Icons.search, color: Colors.orange),
+                    ),
                   ],
                 ),
               ),
@@ -154,7 +164,7 @@ class OurHome extends StatelessWidget {
                               style: TextStyle(color: Colors.grey)),
                           SizedBox(height: 8),
                           Text(
-                            ' Harry Potter, a young wizard who discovers his magical heritage on his eleventh birthday when he receives a letter of acceptance to Hogwarts School of Witchcraft and Wizardry. Harry makes close friends and a few enemies during his first year at the school. With the help of his friends, Ron Weasley and Hermione Granger, he faces an attempted comeback by the dark wizard Lord Voldemort, who killed Harry',
+                            'Harry Potter, a young wizard who discovers his magical heritage on his eleventh birthday when he receives a letter of acceptance to Hogwarts School of Witchcraft and Wizardry. Harry makes close friends and a few enemies during his first year at the school. With the help of his friends, Ron Weasley and Hermione Granger, he faces an attempted comeback by the dark wizard Lord Voldemort, who killed Harry',
                             style: TextStyle(color: Colors.black54),
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
@@ -289,3 +299,4 @@ class BookCard extends StatelessWidget {
     );
   }
 }
+
