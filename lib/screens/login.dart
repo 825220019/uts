@@ -3,6 +3,9 @@ import 'package:uts/screens/signup.dart';
 import 'package:uts/screens/home.dart';
 
 class OurLogin extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   void _goToOurHome(BuildContext context) {
     Navigator.push(
       context,
@@ -10,6 +13,33 @@ class OurLogin extends StatelessWidget {
         builder: (context) => OurHome(),
       ),
     );
+  }
+
+  void _login(BuildContext context) {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    if (email == 'uts@gmail.com' && password == '1234') {
+      _goToOurHome(context);
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Login Failed"),
+            content: Text("Invalid email or password. Please try again."),
+            actions: <Widget>[
+              TextButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -40,7 +70,8 @@ class OurLogin extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 8.0),
                         child: Text("Log In",
                             style: TextStyle(
                                 color: Colors.black,
@@ -48,6 +79,7 @@ class OurLogin extends StatelessWidget {
                                 fontWeight: FontWeight.bold)),
                       ),
                       TextFormField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.alternate_email),
                           hintText: "Email",
@@ -55,6 +87,7 @@ class OurLogin extends StatelessWidget {
                       ),
                       SizedBox(height: 20.0),
                       TextFormField(
+                        controller: _passwordController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.lock_outline),
                           hintText: "Password",
@@ -73,7 +106,7 @@ class OurLogin extends StatelessWidget {
                                 fontSize: 20.0),
                           ),
                         ),
-                        onPressed: () => _goToOurHome(context),
+                        onPressed: () => _login(context),
                       ),
                       TextButton(
                         child: Text("Don't have an account? Sign up here"),
