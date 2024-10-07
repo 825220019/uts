@@ -62,7 +62,8 @@ class OurHome extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const search()),
+                          MaterialPageRoute(
+                              builder: (context) => const Search()),
                         );
                       },
                       child: Icon(Icons.search, color: Colors.orange),
@@ -314,4 +315,3 @@ class BookCard extends StatelessWidget {
     );
   }
 }
-
