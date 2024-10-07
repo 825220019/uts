@@ -37,10 +37,23 @@ List<bookModel> display_list = List.from(main_book_list);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orangeAccent,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
-        elevation: 0.0,
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'PustakaKu',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 25),
+            ),
+            Icon(Icons.notifications, color: Colors.black),
+          ],
+        ),
       ),
       body: Padding(padding: EdgeInsets.all(16),
       child: Column(
