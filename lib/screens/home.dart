@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uts/screens/search.dart'; // Import file search.dart
+import 'package:uts/screens/search.dart';
+import 'package:uts/screens/book.dart';
 
 class OurHome extends StatelessWidget {
   @override
@@ -59,7 +60,6 @@ class OurHome extends StatelessWidget {
                     SizedBox(width: 10),
                     GestureDetector(
                       onTap: () {
-                        // Navigasi ke halaman Search ketika ikon pencarian ditekan
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const search()),
@@ -98,19 +98,34 @@ class OurHome extends StatelessWidget {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    BookCard(
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OurBook()),
+                        );
+                      },
+                      child: BookCard(
                         imagePath: 'assets/images/1.jpg',
-                        title: 'Harry Potter'),
+                        title: 'Harry Potter',
+                      ),
+                    ),
                     BookCard(
-                        imagePath: 'assets/images/2.jpg',
-                        title: 'Atomic Habits'),
+                      imagePath: 'assets/images/2.jpg',
+                      title: 'Atomic Habits',
+                    ),
                     BookCard(
-                        imagePath: 'assets/images/3.jpg', title: 'Ito Junji'),
+                      imagePath: 'assets/images/3.jpg',
+                      title: 'Ito Junji',
+                    ),
                     BookCard(
-                        imagePath: 'assets/images/4.jpg',
-                        title: 'Doraemon (6)'),
+                      imagePath: 'assets/images/4.jpg',
+                      title: 'Doraemon (6)',
+                    ),
                     BookCard(
-                        imagePath: 'assets/images/5.jpg', title: 'IPA Kelas 8'),
+                      imagePath: 'assets/images/5.jpg',
+                      title: 'IPA Kelas 8',
+                    ),
                   ],
                 ),
               ),
