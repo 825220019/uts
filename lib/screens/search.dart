@@ -21,17 +21,14 @@ class _searchState extends State<search> {
 
 List<bookModel> display_list = List.from(main_book_list);
 
-  void updatelist(String value){
-  setState(() {
-    display_list = main_book_list
-        .where((element) =>
-          element.book_judul!.toLowerCase().contains(value.toLowerCase()))
-        .toList();
-    display_list = main_book_list
-        .where((element) =>
-        element.book_kategori!.toLowerCase().contains(value.toLowerCase()))
-        .toList();
-  });
+  void updateList(String value) {
+    setState(() {
+      display_list = main_book_list
+          .where((element) =>
+          element.book_judul!.toLowerCase().contains(value.toLowerCase()) ||
+          element.book_kategori!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    });
   }
 
   @override
@@ -40,7 +37,7 @@ List<bookModel> display_list = List.from(main_book_list);
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
+        elevation: 0.0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -61,9 +58,9 @@ List<bookModel> display_list = List.from(main_book_list);
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Search for a book",
-            style: TextStyle(color: Colors.blue,
-                fontSize: 22.0,
+            "Search for a Book",
+            style: TextStyle(color: Colors.black,
+                fontSize: 27.0,
                 fontWeight: FontWeight.bold,
             )
             ,),
@@ -71,18 +68,19 @@ List<bookModel> display_list = List.from(main_book_list);
             height: 20.0,
           ),
           TextField(
-          onChanged: (value) => updatelist(value),
-            style: TextStyle(color: Colors.red),
+          onChanged: (value) => updateList(value),
+            style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.green,
+              fillColor: Colors.grey,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide.none
+                  borderSide: BorderSide.none,
+
                 ),
                 hintText: "Search...",
               prefixIcon: Icon(Icons.search),
-              prefixIconColor: Colors.orangeAccent,
+              prefixIconColor: Colors.white,
             ),
           ),
           SizedBox(
