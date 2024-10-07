@@ -1,109 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:uts/screens/home.dart';
+import 'package:uts/model/book_model.dart';
 
-class Book {
-  final String title;
-  final String author;
-  final String category;
-  final String imagePath;
+class search extends StatefulWidget {
+  const search({super.key});
 
-  Book({
-    required this.title,
-    required this.author,
-    required this.category,
-    required this.imagePath,
-  });
-}
-
-class Search extends StatefulWidget {
   @override
-  _SearchState createState() => _SearchState();
+  State<search> createState() => _searchState();
 }
 
-class _SearchState extends State<Search> {
-  String _selectedFilter = "Title";
-  String _searchQuery = "";
-  int _currentIndex = 1;
+class _searchState extends State<search> {
 
-  List<Book> _allBooks = [
-    Book(
-      title: "Harry Potter and the Philosopher's Stone",
-      author: "J. K. Rowling",
-      category: "Fiction",
-      imagePath: "assets/images/1.jpg",
-    ),
-    Book(
-      title: "Atomic Habits",
-      author: "James Clear",
-      category: "Non Fiction",
-      imagePath: "assets/images/2.jpg",
-    ),
-    Book(
-      title: "Venus in the Blind Spot",
-      author: "Junji Ito",
-      category: "Horror",
-      imagePath: "assets/images/3.jpg",
-    ),
-    Book(
-      title: "Doraemon (6)",
-      author: "Fujiko F. Fujio",
-      category: "Comic",
-      imagePath: "assets/images/4.jpg",
-    ),
-    Book(
-      title: "IPA Kelas 8",
-      author: "Kemdikbud",
-      category: "Academic",
-      imagePath: "assets/images/5.jpg",
-    ),
+
+  static List<bookModel> main_book_list = [
+    bookModel('assets/images/1.jpg', "Harry Potter and the Sorcerers Stone", "Fantasy,Adventure,Supranatural", 4.8),
+    bookModel('assets/images/2.jpg', "Atomic Habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones", "Fantasy,Adventure,Supranatural", 3.9),
+    bookModel('assets/images/3.jpg', "Ito Junji: Best Of Best Short Story Collection", "Fantasy,Adventure,Supranatural", 4.9),
+    bookModel('assets/images/4.jpg', "Doraemon Vol. 6", "Fantasy,Adventure,Supranatural", 4.4),
+    bookModel('assets/images/5.jpg', "Buku Paket IPA Kelas 8", "Education,Adventure,Supranatural", 4.0),
   ];
 
-  List<Book> _filteredBooks = [];
+List<bookModel> display_list = List.from(main_book_list);
 
-  @override
-  void initState() {
-    super.initState();
-    _filteredBooks = _allBooks;
-  }
-
-  void _searchBooks() {
+  void updateList(String value) {
     setState(() {
-      if (_searchQuery.isEmpty) {
-        _filteredBooks = _allBooks;
-      } else {
-        _filteredBooks = _allBooks.where((book) {
-          if (_selectedFilter == "Title") {
-            return book.title.toLowerCase().contains(_searchQuery.toLowerCase());
-          } else if (_selectedFilter == "Author") {
-            return book.author.toLowerCase().contains(_searchQuery.toLowerCase());
-          } else if (_selectedFilter == "Category") {
-            return book.category.toLowerCase().contains(_searchQuery.toLowerCase());
-          }
-          return false;
-        }).toList();
-      }
+      display_list = main_book_list
+          .where((element) =>
+          element.book_judul!.toLowerCase().contains(value.toLowerCase()) ||
+          element.book_kategori!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
     });
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-
-    if (index == 0) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => OurHome()),
-      );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
+        elevation: 0.0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -118,169 +52,69 @@ class _SearchState extends State<Search> {
           ],
         ),
       ),
-      body: Column(
+      body: Padding(padding: EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 10,
-                    offset: Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          _searchQuery = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Search',
-                        hintStyle: TextStyle(
-                          color: Colors.orange,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  IconButton(
-                    icon: Icon(Icons.search, color: Colors.orange),
-                    onPressed: _searchBooks,
-                  ),
-                ],
-              ),
+          Text(
+            "Search for a Book",
+            style: TextStyle(color: Colors.black,
+                fontSize: 27.0,
+                fontWeight: FontWeight.bold,
+            )
+            ,),
+          SizedBox(
+            height: 20.0,
+          ),
+          TextField(
+          onChanged: (value) => updateList(value),
+            style: TextStyle(color: Colors.black),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.grey,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide.none,
+
+                ),
+                hintText: "Search...",
+              prefixIcon: Icon(Icons.search),
+              prefixIconColor: Colors.white,
             ),
           ),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildFilterButton("Title"),
-                _buildFilterButton("Author"),
-                _buildFilterButton("Category"),
-              ],
-            ),
+          SizedBox(
+            height: 20.0,
           ),
-
-          SizedBox(height: 16),
-
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: _filteredBooks.isNotEmpty
-                  ? ListView.builder(
-                itemCount: _filteredBooks.length,
-                itemBuilder: (context, index) {
-                  final book = _filteredBooks[index];
-                  return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 10,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          child: Image.asset(
-                            book.imagePath,
-                            width: 100,
-                            height: 150,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                book.title,
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 4),
-                              Text("Author: ${book.author}"),
-                              SizedBox(height: 4),
-                              Text("Category: ${book.category}"),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              )
-                  : Center(
-                child: Text('No books found'),
+            child: ListView.builder(
+              itemCount: display_list.length,
+              itemBuilder: (context,index) => ListTile(
+                contentPadding: EdgeInsets.all(10.0) ,
+
+                title: Text(
+                  display_list[index].book_judul!,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+                subtitle: Text(
+                  '${display_list[index].book_kategori!}',
+                  style: TextStyle(
+                      color: Colors.black, fontStyle: FontStyle.italic,
+                  ),
+                ),
+                trailing: Text(
+                  "${display_list[index].book_rating}",
+                  style: TextStyle(color: Colors.red),
+                ),
+                leading: Image.asset(display_list[index].book_gambar!),
               ),
             ),
           ),
-
         ],
       ),
-
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        iconSize: 28,
-        onTap: _onItemTapped,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFilterButton(String label) {
-    bool isSelected = _selectedFilter == label;
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: isSelected ? Colors.orange : Colors.white,
-        side: isSelected ? BorderSide.none : BorderSide(color: Colors.grey),
-        elevation: isSelected ? 5 : 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-      onPressed: () {
-        setState(() {
-          _selectedFilter = label;
-          _searchBooks();
-        });
-      },
-      child: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? Colors.white : Colors.black,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-        ),
       ),
     );
   }

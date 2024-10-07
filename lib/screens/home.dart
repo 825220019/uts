@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uts/screens/search.dart';
-import 'package:uts/screens/book.dart';
+import 'package:uts/screens/search.dart'; // Import file search.dart
 
 class OurHome extends StatelessWidget {
   @override
@@ -50,7 +49,7 @@ class OurHome extends StatelessWidget {
                       child: TextField(
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Search',
+                          hintText: 'Search ...',
                           hintStyle: TextStyle(
                             color: Colors.orange,
                           ),
@@ -58,16 +57,15 @@ class OurHome extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 10),
-                    IconButton(
-                      icon: Icon(Icons.search, color: Colors.orange),
-                      onPressed: () {
+                    GestureDetector(
+                      onTap: () {
+                        // Navigasi ke halaman Search ketika ikon pencarian ditekan
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => Search(),
-                          ),
+                          MaterialPageRoute(builder: (context) => const search()),
                         );
                       },
+                      child: Icon(Icons.search, color: Colors.orange),
                     ),
                   ],
                 ),
@@ -101,37 +99,18 @@ class OurHome extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   children: [
                     BookCard(
-                      imagePath: 'assets/images/1.jpg',
-                      title: 'Harry Potter',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OurBook(),
-                          ),
-                        );
-                      },
-                    ),
+                        imagePath: 'assets/images/1.jpg',
+                        title: 'Harry Potter'),
                     BookCard(
-                      imagePath: 'assets/images/2.jpg',
-                      title: 'Atomic Habits',
-                      onTap: () {},
-                    ),
+                        imagePath: 'assets/images/2.jpg',
+                        title: 'Atomic Habits'),
                     BookCard(
-                      imagePath: 'assets/images/3.jpg',
-                      title: 'Venus in the Blind Spot',
-                      onTap: () {},
-                    ),
+                        imagePath: 'assets/images/3.jpg', title: 'Ito Junji'),
                     BookCard(
-                      imagePath: 'assets/images/4.jpg',
-                      title: 'Doraemon (6)',
-                      onTap: () {},
-                    ),
+                        imagePath: 'assets/images/4.jpg',
+                        title: 'Doraemon (6)'),
                     BookCard(
-                      imagePath: 'assets/images/5.jpg',
-                      title: 'IPA Kelas 8',
-                      onTap: () {},
-                    ),
+                        imagePath: 'assets/images/5.jpg', title: 'IPA Kelas 8'),
                   ],
                 ),
               ),
@@ -185,7 +164,7 @@ class OurHome extends StatelessWidget {
                               style: TextStyle(color: Colors.grey)),
                           SizedBox(height: 8),
                           Text(
-                            ' Harry Potter, a young wizard who discovers his magical heritage on his eleventh birthday when he receives a letter of acceptance to Hogwarts School of Witchcraft and Wizardry. Harry makes close friends and a few enemies during his first year at the school. With the help of his friends, Ron Weasley and Hermione Granger, he faces an attempted comeback by the dark wizard Lord Voldemort, who killed Harry',
+                            'Harry Potter, a young wizard who discovers his magical heritage on his eleventh birthday when he receives a letter of acceptance to Hogwarts School of Witchcraft and Wizardry. Harry makes close friends and a few enemies during his first year at the school. With the help of his friends, Ron Weasley and Hermione Granger, he faces an attempted comeback by the dark wizard Lord Voldemort, who killed Harry',
                             style: TextStyle(color: Colors.black54),
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
@@ -267,64 +246,57 @@ class CategoryItem extends StatelessWidget {
 class BookCard extends StatelessWidget {
   final String imagePath;
   final String title;
-  final VoidCallback onTap;
 
-  const BookCard({
-    Key? key,
-    required this.imagePath,
-    required this.title,
-    required this.onTap,
-  }) : super(key: key);
+  const BookCard({Key? key, required this.imagePath, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 190,
-        margin: EdgeInsets.symmetric(horizontal: 10),
-        decoration: BoxDecoration(
-          color: Color(0xFFFFE09B),
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 3,
-              blurRadius: 5,
-              offset: Offset(3, 3),
+    return Container(
+      width: 190,
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: Color(0xFFFFE09B),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: Offset(3, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.asset(
+              imagePath,
+              width: 190,
+              fit: BoxFit.cover,
             ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Image.asset(
-                imagePath,
-                width: 190,
-                fit: BoxFit.cover,
-              ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 17,
+              shadows: [
+                Shadow(
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 3.0,
+                  color: Colors.grey.withOpacity(0.5),
+                ),
+              ],
             ),
-            SizedBox(height: 8),
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 17,
-                shadows: [
-                  Shadow(
-                    offset: Offset(1.0, 1.0),
-                    blurRadius: 3.0,
-                    color: Colors.grey.withOpacity(0.5),
-                  ),
-                ],
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
 }
+
