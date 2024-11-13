@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class OurTheme {
-  Color _lightGreen = Color.fromARGB(255,213,235,220);
+  Color _yellow = Color(0xFFF7A900);
 
   ThemeData buildTheme() {
     return ThemeData(
-      canvasColor: _lightGreen
+      canvasColor: _yellow,
     );
   }
 }

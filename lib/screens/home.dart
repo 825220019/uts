@@ -219,6 +219,8 @@ class CategoryItem extends StatelessWidget {
   const CategoryItem({Key? key, required this.label, required this.imagePath})
       : super(key: key);
 
+
+  //Category
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -259,6 +261,7 @@ class CategoryItem extends StatelessWidget {
   }
 }
 
+//Recommended
 class BookCard extends StatelessWidget {
   final String imagePath;
   final String title;
