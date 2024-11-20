@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:uts/screens/admin_home.dart';
 import 'package:uts/screens/signup.dart';
 import 'package:uts/screens/home.dart';
 import 'package:uts/modul/user_command.dart';
 import 'package:uts/modul/user.dart';
+import 'package:uts/screens/viewuser.dart';
 
 class OurLogin extends StatefulWidget {
   const OurLogin({super.key});
@@ -60,9 +62,19 @@ class _OurLoginState extends State<OurLogin> {
             child: ListView(
               padding: EdgeInsets.all(20.0),
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(40.0),
-                  child: Image.asset("assets/logo.jpg"),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminHome(),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(40.0),
+                    child: Image.asset("assets/logo.jpg"),
+                  ),
                 ),
                 SizedBox(height: 0.0),
                 Container(
