@@ -17,4 +17,12 @@ class User{
     };
     return map;
   }
+
+   userMap() {
+     var mapping = Map<String, dynamic>();
+     mapping['Userid'] = userid ?? null;
+     mapping['Username'] = username!;
+     mapping['Password'] = password!;
+     return mapping;
+   }
 }
