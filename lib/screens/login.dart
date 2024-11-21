@@ -1,3 +1,6 @@
+//tampilan ui login mengikuti tutorial yt Tadas Petra
+//sqlite menyesuaikan kodingan pertemuan 11
+
 import 'package:flutter/material.dart';
 import 'package:uts/screens/signup.dart';
 import 'package:uts/screens/home.dart';
@@ -17,10 +20,10 @@ class _OurLoginState extends State<OurLogin> {
   final formState = GlobalKey<FormState>();
   late UserCommand dbUser = UserCommand();
 
+  // Fungsi untuk navigasi ke halaman Home jika login berhasil.
   void _goToOurHome(BuildContext context) async {
     if (formState.currentState!.validate()) {
-      User? user =
-      await dbUser.signIn(_emailController.text, _passwordController.text);
+      User? user = await dbUser.signIn(_emailController.text, _passwordController.text);
       if (user != null) {
         Navigator.pushReplacement(
           context,
@@ -79,11 +82,13 @@ class _OurLoginState extends State<OurLogin> {
                         Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: 20.0, horizontal: 8.0),
-                          child: Text("Log In",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 25.0,
-                                  fontWeight: FontWeight.bold)),
+                          child: Text(
+                            "Log In",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 25.0,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                         TextFormField(
                           controller: _emailController,
@@ -160,8 +165,8 @@ class _OurLoginState extends State<OurLogin> {
                             }
                           },
                         ),
+                        // Tombol untuk navigasi ke halaman Sign Up.
                         TextButton(
-                          child: Text("Don't have an account? Sign up here"),
                           style: TextButton.styleFrom(
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
@@ -170,6 +175,7 @@ class _OurLoginState extends State<OurLogin> {
                               builder: (context) => OurSignUp(),
                             ));
                           },
+                          child: Text("Don't have an account? Sign up here"),
                         ),
                       ],
                     ),

@@ -1,3 +1,6 @@
+//tampilan ui login mengikuti tutorial yt Tadas Petra
+//sqlite menyesuaikan kodingan pertemuan 11
+
 import 'package:flutter/material.dart';
 import 'package:uts/screens/login.dart';
 import 'package:uts/widgets/ourContainer.dart';
@@ -5,6 +8,8 @@ import 'package:uts/modul/user_command.dart';
 import 'package:uts/modul/user.dart';
 
 class OurSignUp extends StatefulWidget {
+  const OurSignUp({super.key});
+
   @override
   State<OurSignUp> createState() => _OurSignUpState();
 }
@@ -12,11 +17,11 @@ class OurSignUp extends StatefulWidget {
 class _OurSignUpState extends State<OurSignUp> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-  TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   final formState = GlobalKey<FormState>();
   UserCommand dbUser = UserCommand();
 
+  // Fungsi untuk proses sign-up
   void _signUp(BuildContext context) async {
     if (formState.currentState!.validate()) {
       User user = User(
