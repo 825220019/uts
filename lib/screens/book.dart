@@ -1,10 +1,16 @@
-//kodingan cart provider mengikuti tutorial yt The Tech Brother
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uts/modul/cart_provider.dart';
+import 'package:uts/model/book_model.dart';
+
+import '../modul/cart_provider.dart';
 
 class OurBook extends StatelessWidget {
+  final Buku buku;
+
+  const OurBook({Key? key, required this.buku}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,8 +53,8 @@ class OurBook extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                    'assets/images/1.jpg',
+                  child: Image.file(
+                    File(buku.bookGambar!),
                     height: 280,
                     fit: BoxFit.cover,
                   ),
@@ -80,18 +86,18 @@ class OurBook extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      'Rp. 200.000',
+                      'Rp. ${buku.bookRating}',
                       style: TextStyle(color: Colors.blue[900]),
                     ),
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Harry Potter and The Sorcerer’s Stone',
+                    buku.bookJudul!,
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 4),
                   Text(
-                    'by J.K. Rowling',
+                    'by ${buku.bookAuthor}',
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   SizedBox(height: 16),
@@ -100,7 +106,7 @@ class OurBook extends StatelessWidget {
                       style: TextStyle(color: Colors.black, fontSize: 15),
                       children: [
                         TextSpan(
-                          text: "Harry Potter, a young wizard who discovers his magical heritage...",
+                          text: "${buku.sinopsis}",
                         ),
                       ],
                     ),
@@ -131,7 +137,7 @@ class OurBook extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                '- National Library of the Republic of Indonesia',
+                                '- ${buku.bookKategori}',
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),
@@ -156,8 +162,7 @@ class OurBook extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,
                 ),
-                onPressed: () {
-                },
+                onPressed: () {},
                 child: Text(
                   'Read',
                   style: TextStyle(

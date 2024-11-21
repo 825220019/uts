@@ -5,13 +5,14 @@ import 'package:sqflite/sqflite.dart';
 import 'package:uts/modul/user.dart';
 
 class DatabaseConnection {
-  static const databaseName = 'user.db';
-  static const versi = 1;
+  static const databaseName = 'db_perpustakaan_5.db';
+  static const versi = 5;
 
   // Singleton pattern
   DatabaseConnection._privateConstructor();
 
-  static final DatabaseConnection instance = DatabaseConnection._privateConstructor();
+  static final DatabaseConnection instance =
+  DatabaseConnection._privateConstructor();
 
   static Database? _db;
 
@@ -39,6 +40,20 @@ class DatabaseConnection {
     await db.execute(
       'CREATE TABLE user(userid INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL);',
     );
+
+    await db.execute('''
+  CREATE TABLE buku(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    gambar TEXT,
+    sinopsis TEXT,
+    judul TEXT NOT NULL,
+    kategori TEXT, 
+    rating REAL,
+    author TEXT,
+    is_recommended INTEGER DEFAULT 0,  -- 0 means not recommended, 1 means recommended
+    trending_book INTEGER DEFAULT 0  -- 0 means not trending, 1 means trending
+  );
+''');
   }
 
   // Insert data
@@ -75,5 +90,8 @@ class DatabaseConnection {
     );
   }
 
-  setDatabase() {}
+  Future<Database?> setDatabase() async {
+    _db ??= await _initDatabase();
+    return _db;
+  }
 }

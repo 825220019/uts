@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:uts/screens/admin/book.dart';
+import 'package:uts/screens/login.dart';
 import 'package:uts/screens/signup.dart';
 import 'package:uts/screens/viewuser.dart';
 
@@ -12,7 +14,13 @@ class AdminHome extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => OurLogin(),
+              ),
+                  (route) => false,
+            );
           },
         ),
         automaticallyImplyLeading: false,
@@ -55,7 +63,7 @@ class AdminHome extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => OurSignUp()),
+                    MaterialPageRoute(builder: (context) => BookScreenAdmin()),
                   );
                 },
               ),

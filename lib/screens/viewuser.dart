@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uts/modul/user.dart';
+import 'package:uts/screens/admin_home.dart';
 import 'package:uts/screens/edituser.dart';
 import '../database/database_connection.dart';
 
@@ -30,7 +31,7 @@ class _ViewUserState extends State<ViewUser> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AdminHome(),), (route) => false,);
           },
         ),
         automaticallyImplyLeading: false,

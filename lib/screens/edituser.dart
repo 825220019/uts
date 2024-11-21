@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:uts/modul/user.dart'; // Pastikan Anda sudah mengimpor file user.dart
+import 'package:uts/database/database_connection.dart';
+import 'package:uts/modul/user.dart';
+import 'package:uts/screens/viewuser.dart'; // Pastikan Anda sudah mengimpor file user.dart
 
 class EditUser extends StatefulWidget {
   final User user;
@@ -37,7 +39,7 @@ class _EditUserState extends State<EditUser> {
 
   Future<void> _updateUser(int userId, String username, String password) async {
     await _database.update(
-      'users',
+      'user',
       {'username': username, 'password': password},
       where: 'id = ?',
       whereArgs: [userId],
@@ -79,7 +81,8 @@ class _EditUserState extends State<EditUser> {
                   hintText: 'Enter Username',
                   labelText: 'Username',
                   labelStyle: TextStyle(color: Colors.orange),
-                  errorText: _validateUsername ? 'Username cannot be empty' : null,
+                  errorText:
+                  _validateUsername ? 'Username cannot be empty' : null,
                 ),
               ),
               SizedBox(height: 20),
@@ -92,7 +95,8 @@ class _EditUserState extends State<EditUser> {
                   hintText: 'Enter Password',
                   labelText: 'Password',
                   labelStyle: TextStyle(color: Colors.orange),
-                  errorText: _validatePassword ? 'Password cannot be empty' : null,
+                  errorText:
+                  _validatePassword ? 'Password cannot be empty' : null,
                 ),
               ),
               SizedBox(height: 30),
@@ -109,19 +113,29 @@ class _EditUserState extends State<EditUser> {
                       ),
                       onPressed: () async {
                         setState(() {
-                          _validateUsername = _userUsernameController.text.isEmpty;
-                          _validatePassword = _userPasswordController.text.isEmpty;
+                          _validateUsername =
+                              _userUsernameController.text.isEmpty;
+                          _validatePassword =
+                              _userPasswordController.text.isEmpty;
                         });
                         if (!_validateUsername && !_validatePassword) {
-                          await _updateUser(
-                            widget.user.userid!,
-                            _userUsernameController.text,
-                            _userPasswordController.text,
-                          );
+                          User user = User(
+                              userid: widget.user.userid!,
+                              password: _userPasswordController.text,
+                              username: _userUsernameController.text);
+
+                          await DatabaseConnection.instance.updateUser(user);
+
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("User updated successfully!")),
+                            SnackBar(
+                                content: Text("User updated successfully!")),
                           );
-                          Navigator.pop(context); // Kembali ke halaman sebelumnya
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => ViewUser(),
+                            ),
+                                (route) => false,
+                          );
                         }
                       },
                       child: Text(

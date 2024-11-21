@@ -1,9 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:uts/screens/search.dart';
 import 'package:uts/screens/book.dart';
+import 'package:uts/services/buku_service.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  @override
+  State<HomeScreen> createState() => _OurHomeState();
+}
+
+class _OurHomeState extends State<HomeScreen> {
+  BukuService bukuService = BukuService();
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +19,7 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -52,7 +61,9 @@ class HomeScreen extends StatelessWidget {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Search ...',
-                          hintStyle: TextStyle(color: Colors.orange),
+                          hintStyle: TextStyle(
+                            color: Colors.orange,
+                          ),
                         ),
                       ),
                     ),
@@ -93,103 +104,111 @@ class HomeScreen extends StatelessWidget {
               Text('Recommended',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
               SizedBox(height: 10),
-              SizedBox(
+              Container(
                 height: 290,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => OurBook()),
-                        );
-                      },
-                      child: BookCard(
-                        imagePath: 'assets/images/1.jpg',
-                        title: 'Harry Potter',
-                      ),
-                    ),
-                    BookCard(
-                      imagePath: 'assets/images/2.jpg',
-                      title: 'Atomic Habits',
-                    ),
-                    BookCard(
-                      imagePath: 'assets/images/3.jpg',
-                      title: 'Ito Junji',
-                    ),
-                    BookCard(
-                      imagePath: 'assets/images/4.jpg',
-                      title: 'Doraemon (6)',
-                    ),
-                    BookCard(
-                      imagePath: 'assets/images/5.jpg',
-                      title: 'IPA Kelas 8',
-                    ),
-                  ],
-                ),
+                child: FutureBuilder(
+                    future: bukuService.getRecomended(),
+                    builder: (context, snapshot) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) => GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OurBook(
+                                  buku: snapshot.data![index],
+                                ),
+                              ),
+                            );
+                          },
+                          child: BookCard(
+                            imagePath: snapshot.data![index].bookGambar!,
+                            title: snapshot.data![index].bookJudul!,
+                          ),
+                        ),
+                        scrollDirection: Axis.horizontal,
+                      );
+                    }),
               ),
               SizedBox(height: 20),
               Text('Trending Book',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
               SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 10)],
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      'assets/images/1.jpg',
-                      width: 130,
-                      height: 185,
-                      fit: BoxFit.cover,
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.blue[100],
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              'Fiction',
-                              style: TextStyle(color: Colors.blue[900]),
-                            ),
+              FutureBuilder(
+                  future: bukuService.getTrending(),
+                  builder: (context, snapshot) => ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => OurBook(buku: snapshot.data![index]),)),
+                      child: Container(
+                        child: Container(
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(color: Colors.grey, blurRadius: 10)
+                            ],
                           ),
-                          SizedBox(height: 8),
-                          Text(
-                            "Harry Potter and The Sorcerer's Stone",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.file(
+                                File(snapshot.data![index].bookGambar!),
+                                width: 130,
+                                height: 185,
+                                fit: BoxFit.cover,
+                              ),
+                              SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue[100],
+                                        borderRadius:
+                                        BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        snapshot.data![index].bookKategori!,
+                                        style: TextStyle(
+                                            color: Colors.blue[900]),
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      "${snapshot.data![index].bookJudul}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                        'by ${snapshot.data![index].bookAuthor}',
+                                        style: TextStyle(color: Colors.grey)),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      '${snapshot.data![index].sinopsis}',
+                                      style: TextStyle(color: Colors.black54),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 8),
-                          Text('by J.K. Rowling',
-                              style: TextStyle(color: Colors.grey)),
-                          SizedBox(height: 8),
-                          Text(
-                            'Harry Potter, a young wizard...',
-                            style: TextStyle(color: Colors.black54),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  ))
             ],
           ),
         ),
@@ -198,13 +217,14 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// Widget untuk kategori buku
 class CategoryItem extends StatelessWidget {
   final String label;
   final String imagePath;
 
-  const CategoryItem({super.key, required this.label, required this.imagePath});
+  const CategoryItem({Key? key, required this.label, required this.imagePath})
+      : super(key: key);
 
+  //Category
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -215,7 +235,7 @@ class CategoryItem extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
-              color: Colors.grey, // Border abu-abu
+              color: Colors.grey,
               width: 2,
             ),
             borderRadius: BorderRadius.circular(15),
@@ -245,12 +265,13 @@ class CategoryItem extends StatelessWidget {
   }
 }
 
-// Widget untuk kartu buku
+//Recommended
 class BookCard extends StatelessWidget {
   final String imagePath;
   final String title;
 
-  const BookCard({super.key, required this.imagePath, required this.title});
+  const BookCard({Key? key, required this.imagePath, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -273,13 +294,13 @@ class BookCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image.asset(
-              imagePath,
-              width: 190,
-              fit: BoxFit.cover,
-            ),
-          ),
+              borderRadius: BorderRadius.circular(15),
+              child: Image.file(
+                File(imagePath), // Displaying the image from the local file
+                width: 190,
+                height: 230, // Ensuring the image has a fixed height
+                fit: BoxFit.cover,
+              )),
           SizedBox(height: 8),
           Text(
             title,
