@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uts/model/book_model.dart';
+import 'package:uts/screens/isibuku.dart';
 
 import '../modul/cart_provider.dart';
 
@@ -162,7 +163,8 @@ class OurBook extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,
                 ),
-                onPressed: () {},
+
+                onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context)=> BookReaderPage()));},
                 child: Text(
                   'Read',
                   style: TextStyle(

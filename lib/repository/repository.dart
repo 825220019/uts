@@ -19,6 +19,7 @@ class Repository {
     }
   }
 
+  //insert data user
   insertData(table, data) async {
     var connection = await database;
     return await connection?.insert(table, data);
@@ -34,12 +35,14 @@ class Repository {
     return await connetion?.query(table, where: 'id = ?', whereArgs: [itemId]);
   }
 
+  //update data user
   updateData(table, data) async {
     var connetion = await database;
     return await connetion
         ?.update(table, data, where: 'id = ?', whereArgs: [data['id']]);
   }
 
+  //delete data user
   deleteDataById(table, itemId) async {
     var connetion = await database;
     return await connetion?.rawDelete("DELETE FROM $table WHERE id = $itemId");
